@@ -9,14 +9,14 @@ let dom_canvas = document.createElement("canvas");
 document.querySelector("#canvas").appendChild(dom_canvas);
 let CTX = dom_canvas.getContext("2d");
 
-const W = (dom_canvas.width = 400);
+const W = (dom_canvas.width = 800);
 const H = (dom_canvas.height = 400);
 
 let snake,
   food,
   currentHue,
-  cells = 20,
-  cellSize,
+  cells = 40,
+  cellSize = W / cells,
   isGameOver = false,
   tails = [],
   score = 0,
@@ -257,7 +257,7 @@ class Food {
   constructor() {
     this.pos = new helpers.Vec(
       ~~(Math.random() * cells) * cellSize,
-      ~~(Math.random() * cells) * cellSize
+      ~~(Math.random() * (H / cellSize)) * cellSize
     );
     this.color = currentHue = `hsl(${~~(Math.random() * 360)},100%,50%)`;
     this.size = cellSize;
@@ -274,7 +274,7 @@ class Food {
   }
   spawn() {
     let randX = ~~(Math.random() * cells) * this.size;
-    let randY = ~~(Math.random() * cells) * this.size;
+    let randY = ~~(Math.random() * (H / cellSize)) * this.size;
     for (let path of snake.history) {
       if (helpers.isCollision(new helpers.Vec(randX, randY), path)) {
         return this.spawn();
